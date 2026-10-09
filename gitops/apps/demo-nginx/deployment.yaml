@@ -12,7 +12,9 @@ spec:
     matchLabels:
       app.kubernetes.io/name: demo-nginx
   template:
-    metadata:
+  annotations:
+    demo.trase/config-version: "v2"   
+    metadata:    
       labels:
         app.kubernetes.io/name: demo-nginx
     spec:
