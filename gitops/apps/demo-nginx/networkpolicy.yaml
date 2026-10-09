@@ -18,8 +18,9 @@ spec:
   podSelector:
     matchLabels:
       app.kubernetes.io/name: demo-nginx
-  policyTypes:
-    - Ingress
+  policyTypes: [Ingress]
+  ingress:
+    - {}   # allow from anywhere
   ingress:
     - from:
         - podSelector:
