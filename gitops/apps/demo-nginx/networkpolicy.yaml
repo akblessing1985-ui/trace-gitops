@@ -11,13 +11,22 @@ apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
   name: demo-nginx-ingress
-  namespace: demo-nginx
   labels:
     app.kubernetes.io/name: demo-nginx
 spec:
   podSelector:
     matchLabels:
       app.kubernetes.io/name: demo-nginx
-  policyTypes: [Ingress]
+  policyTypes:
+    - Ingress
   ingress:
-    - {}   # allow from anywhere
+    # namespaceSelector: {} + podSelector => matching pods in any namespace.
+    # (podSelector alone would only match the policy's own namespace.)
+    - from:
+        - namespaceSelector: {}
+          podSelector:
+            matchLabels:
+              access: demo-nginx
+      ports:
+        - protocol: TCP
+          port: 80
