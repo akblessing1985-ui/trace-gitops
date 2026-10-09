@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: demo-nginx
+  labels:
+    app.kubernetes.io/name: demo-nginx
+    # Used by NetworkPolicy namespaceSelector examples in the RUNBOOK.
+    purpose: demo

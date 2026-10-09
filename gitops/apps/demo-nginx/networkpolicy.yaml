@@ -1,0 +1,32 @@
+# Enforced only when the CNI supports NetworkPolicy.
+# This cluster enables Amazon VPC CNI network policy via Terraform (enableNetworkPolicy=true).
+#
+# Required labels:
+# - App pods: app.kubernetes.io/name=demo-nginx (selected below)
+# - Allowed clients: access=demo-nginx on the client pod (any namespace)
+#
+# Traffic without that label is denied (default deny for unmatched ingress).
+# Kubelet probes are host-originated; VPC CNI network policy generally does not block them.
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: demo-nginx-ingress
+  labels:
+    app.kubernetes.io/name: demo-nginx
+spec:
+  podSelector:
+    matchLabels:
+      app.kubernetes.io/name: demo-nginx
+  policyTypes:
+    - Ingress
+  ingress:
+    # namespaceSelector: {} + podSelector => matching pods in any namespace.
+    # (podSelector alone would only match the policy's own namespace.)
+    - from:
+        - namespaceSelector: {}
+          podSelector:
+            matchLabels:
+              access: demo-nginx
+      ports:
+        - protocol: TCP
+          port: 80
