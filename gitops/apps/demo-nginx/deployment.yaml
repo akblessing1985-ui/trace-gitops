@@ -4,6 +4,8 @@ metadata:
   name: demo-nginx
   labels:
     app.kubernetes.io/name: demo-nginx
+  annotations:
+    demo.trase/config-version: "v2"    
 spec:
   replicas: 1
   selector:
